@@ -1,0 +1,22 @@
+# DataSource Config
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/300counter?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #切换数据源为数据池druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid配置
+    initialSize: 5
+    minIdle: 10
+    maxActive: 20
+    maxWait: 6000
+    timeBetweenEvictionRunsMillis: 2000
+    minEvictableIdleTimeMillis: 600000
+    maxEvictableIdleTimeMillis: 900000
+server:
+  port: 8081
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
