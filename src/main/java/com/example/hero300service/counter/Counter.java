@@ -33,32 +33,32 @@ public class Counter {
         costMap.put("gjsd", costService.getById("gjsd"));
     }
 
-    public List<int[]> getCompResult(Equip equip, String[] xz) {
-        switch( xz.length) {
+    public List<int[]> getCompResult(Equip equip, String[] attrs) {
+        switch( attrs.length) {
             case 2 :
-                return compLong2(xz, equip);
+                return compLong2(attrs, equip);
             case 3 :
-                return compLong3(xz, equip);
+                return compLong3(attrs, equip);
             case 4 :
-                return compLong4(xz, equip);
+                return compLong4(attrs, equip);
         }
         return null;
     }
 
-    private List<int[]> compLong2(String[] xz, Equip equip) {
+    private List<int[]> compLong2(String[] attrs, Equip equip) {
         int countAll = 1500;
         List<int[]> list = new ArrayList<>();
         Map<Integer,Integer> map1 = new HashMap<>();
         Map<Integer,Integer> map2 = new HashMap<>();
         for(int i=1; i<countAll; i++) {
-            map1.put(i, compSx(xz[0], equip, i));
+            map1.put(i, compSx(attrs[0], equip, i));
         }
         for(int i=1; i<countAll; i++) {
-            map2.put(i, compSx(xz[1], equip, i));
+            map2.put(i, compSx(attrs[1], equip, i));
         }
         for(int i=1;i<countAll; i++) {
             for(int j=1; j<countAll-i; j++) {
-                if( (map1.get(i) + map2.get(j)) == getKyjz(equip) ) {
+                if( (map1.get(i) + map2.get(j)) == getTotalValue(equip) ) {
                     int[] reult = {i, j};
                     list.add(reult);
                 }
@@ -67,7 +67,7 @@ public class Counter {
         return list;
     }
 
-    private List<int[]> compLong3(String[] xz, Equip equip) {
+    private List<int[]> compLong3(String[] attrs, Equip equip) {
         int countAll = 1500;
         List<int[]> list = new ArrayList<>();
         List<Integer[]> list12;
@@ -75,10 +75,10 @@ public class Counter {
         Map<Integer,Integer> cmap1 = new HashMap<>();
         Map<Integer,Integer> cmap2 = new HashMap<>();
         for(int i=1; i<countAll; i++) {
-            cmap1.put(i, compSx(xz[1], equip, i));
+            cmap1.put(i, compSx(attrs[1], equip, i));
         }
         for(int i=1; i<countAll; i++) {
-            cmap2.put(i, compSx(xz[2], equip, i));
+            cmap2.put(i, compSx(attrs[2], equip, i));
         }
         int key = 0;
         for(int i=1;i<countAll; i++) {
@@ -95,7 +95,7 @@ public class Counter {
             }
         }
         for(int i=1; i<countAll; i++) {
-            int sn = getKyjz(equip) - compSx(xz[0], equip, i);
+            int sn = getTotalValue(equip) - compSx(attrs[0], equip, i);
             if( cmap12.containsKey(sn) ) {
                 for(int j=0; j<cmap12.get(sn).size(); j++) {
                     int[] result = {i, ((Integer[])cmap12.get(sn).get(j))[0], ((Integer[])cmap12.get(sn).get(j))[1]};
@@ -106,7 +106,7 @@ public class Counter {
         return list;
     }
 
-    private List<int[]> compLong4(String[] xz, Equip equip) {
+    private List<int[]> compLong4(String[] attrs, Equip equip) {
         int countAll = 1500;
         List<int[]> list = new ArrayList<>();
         List<Integer[]> list12;
@@ -116,16 +116,16 @@ public class Counter {
         Map<Integer,Integer> map2 = new HashMap<>();
         Map<Integer,Integer> map3 = new HashMap<>();
         for(int i=1; i<countAll; i++) {
-            map0.put(i, compSx(xz[0], equip, i));
+            map0.put(i, compSx(attrs[0], equip, i));
         }
         for(int i=1; i<countAll; i++) {
-            map1.put(i, compSx(xz[1], equip, i));
+            map1.put(i, compSx(attrs[1], equip, i));
         }
         for(int i=1; i<countAll; i++) {
-            map2.put(i, compSx(xz[2], equip, i));
+            map2.put(i, compSx(attrs[2], equip, i));
         }
         for(int i=1; i<countAll; i++) {
-            map3.put(i, compSx(xz[3], equip, i));
+            map3.put(i, compSx(attrs[3], equip, i));
         }
         int key = 0;
         for(int i=1;i<countAll; i++) {
@@ -143,7 +143,7 @@ public class Counter {
         }
         for(int i=1; i<countAll; i++) {
             for(int j=1; j<countAll-i; j++) {
-                int sn = getKyjz(equip) - map0.get(i) - map1.get(j);
+                int sn = getTotalValue(equip) - map0.get(i) - map1.get(j);
                 if( map12.containsKey(sn) ) {
                     for(int k=0; k<map12.get(sn).size(); k++) {
                         int[] result = {i, j, ((Integer[])map12.get(sn).get(k))[0], ((Integer[])map12.get(sn).get(k))[1]};
@@ -159,12 +159,12 @@ public class Counter {
 
     /**
      * 根据选项名称选择计算方法
-     * @param sx count
+     * @param attr count
      * @return int 所需价值
      */
-    private int compSx(String sx, Equip equip, int count) {
+    private int compSx(String attr, Equip equip, int count) {
         int n = 0;
-        switch (sx) {
+        switch (attr) {
             case "gjl":
                 n = Algorithm.getCost(costMap.get("gjl"), equip.getGjl(), count);
                 break;
@@ -199,19 +199,19 @@ public class Counter {
         return n;
     }
 
-    private int getKyjz(Equip equip) {
-        int jz = 0;
-        jz += equip.getGjl() * costMap.get("gjl").getCostOne();
-        jz += equip.getFsqd() * costMap.get("fsqd").getCostOne();
-        jz += equip.getBjl() * costMap.get("bjl").getCostOne();
-        jz += equip.getWlhj() * costMap.get("wlhj").getCostOne();
-        jz += equip.getFskx() * costMap.get("fskx").getCostOne();
-        jz += equip.getSmz() * costMap.get("smz").getCostOne();
-        jz += equip.getFlz() * costMap.get("flz").getCostOne();
-        jz += equip.getSmhf() * costMap.get("smhf").getCostOne();
-        jz += equip.getFlhf() * costMap.get("flhf").getCostOne();
-        jz += equip.getGjsd() * costMap.get("gjsd").getCostOne();
-        return jz;
+    private int getTotalValue(Equip equip) {
+        int count = 0;
+        count += equip.getGjl() * costMap.get("gjl").getCostOne();
+        count += equip.getFsqd() * costMap.get("fsqd").getCostOne();
+        count += equip.getBjl() * costMap.get("bjl").getCostOne();
+        count += equip.getWlhj() * costMap.get("wlhj").getCostOne();
+        count += equip.getFskx() * costMap.get("fskx").getCostOne();
+        count += equip.getSmz() * costMap.get("smz").getCostOne();
+        count += equip.getFlz() * costMap.get("flz").getCostOne();
+        count += equip.getSmhf() * costMap.get("smhf").getCostOne();
+        count += equip.getFlhf() * costMap.get("flhf").getCostOne();
+        count += equip.getGjsd() * costMap.get("gjsd").getCostOne();
+        return count;
     }
 
 }

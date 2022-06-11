@@ -10,22 +10,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 class ApplicationTests {
 
-    @Autowired
-    private EquipService equipService;
-    @Autowired
-    private HeroController heroController;
-
-
-    @Test
-    void contextLoads() {
-        String[] attrs = new String[]{"gjl", "fsqd", "smz"};
-        ResultVO<List<int[]>> resultVO = heroController.getEquipCount(1, attrs);
-        for (int[] datum : resultVO.getData()) {
-            System.out.println(Arrays.toString(datum));
-        }
-    }
+//    @Autowired
+//    private EquipService equipService;
+//    @Autowired
+//    private HeroController heroController;
+//
+//
+//    @Test
+//    void contextLoads() {
+//        String[] attrs = new String[]{"gjl", "fsqd", "smz"};
+//        ResultVO<List<int[]>> resultVO = heroController.getEquipCount(1, attrs);
+//        for (int[] datum : resultVO.getData()) {
+//            System.out.println(Arrays.toString(datum));
+//        }
+//    }
 
 }
