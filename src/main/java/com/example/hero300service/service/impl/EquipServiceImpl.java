@@ -10,10 +10,7 @@ import com.example.hero300service.service.EquipService;
 import com.example.hero300service.utils.JedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EquipServiceImpl extends ServiceImpl<EquipMapper, Equip> implements EquipService {
@@ -23,12 +20,8 @@ public class EquipServiceImpl extends ServiceImpl<EquipMapper, Equip> implements
     @Autowired
     private JedisUtil jedisUtil;
 
-    public Map<String, Equip> getEquipAll() {
-        Map<String, Equip> map = new HashMap<>();
-        for (Equip equip : this.list()) {
-            map.put(equip.getEname(), equip);
-        }
-        return map;
+    public List<Equip> getEquipAll() {
+        return this.list();
     }
 
     public List<int[]> getEquitCount(Integer eid, String[] attrs) {
@@ -53,5 +46,9 @@ public class EquipServiceImpl extends ServiceImpl<EquipMapper, Equip> implements
         String value = JSONObject.toJSONString(list);
         RedisThread thread = new RedisThread(key, value, jedisUtil);
         thread.start();
+    }
+
+    public void getImg(String name) {
+
     }
 }

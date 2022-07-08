@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface EquipService extends IService<Equip> {
 
-    Map<String, Equip> getEquipAll();
+    List<Equip> getEquipAll();
 
     List<int[]> getEquitCount(Integer eid, String[] attrs);
 }

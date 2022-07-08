@@ -4,10 +4,12 @@ import com.example.hero300service.service.EquipService;
 import com.example.hero300service.utils.ResultVO;
 import com.example.hero300service.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController
 public class HeroController {
 
